@@ -6,7 +6,7 @@ import dayjs, { type Dayjs } from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
 import useFeedStore from '../stores/feedStore';
 import useHotFeedStore from '../stores/hotFeedStore';
-import FeedGrid from '../components/feeds/FeedGrid';
+import FeedList from '../components/feeds/FeedList';
 
 export default function HotFeedPage() {
   const { hotFeeds, fetchHotFeeds, clear, isLoading } = useHotFeedStore();
@@ -15,7 +15,7 @@ export default function HotFeedPage() {
 
   useEffect(() => {
     if (selectedDate) {
-      fetchHotFeeds(selectedDate.format('YYYY-MM-DD'));
+      fetchHotFeeds(selectedDate.toDate());
     }
     return () => {
       clear();
@@ -35,7 +35,7 @@ export default function HotFeedPage() {
       }
 
       if (selectedDate) {
-        fetchHotFeeds(selectedDate.format('YYYY-MM-DD'));
+        fetchHotFeeds(selectedDate.toDate());
       }
     },
     [likeFeed, unlikeFeed, fetchHotFeeds, selectedDate],
@@ -54,11 +54,16 @@ export default function HotFeedPage() {
       >
         <Paper
           elevation={1}
-          sx={{ p: 4, width: '100%', height: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}
+          sx={{
+            p: 4,
+            width: '100%',
+            maxWidth: '1280px',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+          }}
         >
-          <Typography variant="h5" component="h1">
-            날짜별 인기 피드
-          </Typography>
           <Box>
             <DatePicker
               label="날짜 선택"
@@ -72,7 +77,11 @@ export default function HotFeedPage() {
           {isLoading ? (
             <Typography>로딩 중...</Typography>
           ) : (
-            <FeedGrid feeds={hotFeeds} onClickLike={handleClickLike} fetchMore={async () => {}} />
+            <FeedList
+              feeds={hotFeeds}
+              onClickLike={handleClickLike}
+              fetchMore={async () => {}} // HotFeedPage는 무한 스크롤이 없으므로 빈 함수 전달
+            />
           )}
         </Paper>
       </Box>
