@@ -18,12 +18,12 @@ interface Props {
   fetchMore: () => Promise<void>;
 }
 
-export default function FeedList({ feeds, onClickFeed, onClickLike, onChangeFilter = () => {}, fetchMore }: Props) {
+export default function FeedList({ feeds, onClickFeed, onClickLike, onChangeFilter, fetchMore }: Props) {
   const { infiniteScrollRef } = useInfiniteScroll(fetchMore);
 
   return (
     <Box ref={infiniteScrollRef} sx={{ width: '100%', height: '100%', maxHeight: '100%', overflow: 'auto' }}>
-      <FeedListFilter onChangeFilter={onChangeFilter} />
+      {onChangeFilter && <FeedListFilter onChangeFilter={onChangeFilter} />}
       <Grid container spacing={2}>
         {feeds.map((feed) => (
           <Grid key={feed.id} size={{ xs: 12, md: 4, lg: 3 }} onClick={() => onClickFeed?.(feed)}>

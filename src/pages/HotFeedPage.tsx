@@ -81,6 +81,7 @@ export default function HotFeedPage() {
               feeds={hotFeeds}
               onClickLike={handleClickLike}
               fetchMore={async () => {}} // HotFeedPage는 무한 스크롤이 없으므로 빈 함수 전달
+              // onChangeFilter는 전달하지 않음 (필터를 표시하지 않기 위해)
             />
           )}
         </Paper>
