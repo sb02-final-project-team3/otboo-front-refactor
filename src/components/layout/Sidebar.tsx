@@ -4,6 +4,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import PublicIcon from '@mui/icons-material/Public';
 import RecommendationIcon from '@mui/icons-material/Recommend';
 import SettingsIcon from '@mui/icons-material/Settings';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
+
 import {
   Divider,
   Drawer,
@@ -42,6 +44,7 @@ export default function Sidebar({ drawerWidth }: Props) {
   const menuIcons: Record<keyof typeof ROUTE_OBJECTS, React.ReactNode> = {
     home: <HomeIcon />,
     recommendation: <RecommendationIcon />,
+    hotFeed: <WhatshotIcon />, // 2. 아이콘 매핑 추가
     closet: <CheckroomIcon />,
     feed: <PublicIcon />,
     userManagement: <PersonIcon />,
@@ -78,7 +81,7 @@ export default function Sidebar({ drawerWidth }: Props) {
       </Toolbar>
       <Divider sx={{ borderColor: 'primary.light' }} />
       <List>
-        {['recommendation', 'closet', 'feed'].map((routeKey) => (
+        {['recommendation', 'closet', 'feed', 'hotFeed'].map((routeKey) => (
           <ListItem
             key={ROUTE_OBJECTS[routeKey].title}
             disablePadding

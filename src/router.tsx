@@ -14,9 +14,11 @@ import ProfileMamagementPage from './pages/ProfileMamagementPage';
 import ProfilePage from './pages/ProfilePage';
 import RecommendationPage from './pages/RecommendationPage';
 import SignOutPage from './pages/SignOutPage';
+import HotFeedPage from './pages/HotFeedPage'; // 1. import 추가
 
 export const ROUTE_OBJECTS: Record<string, { path: string; title: string }> = {
   home: { path: '/', title: '홈' },
+  hotFeed: { path: '/hot-feed', title: '인기 피드' }, // 2. hotFeed 경로 추가
   recommendation: { path: '/recommendation', title: '날씨 별 옷 추천' },
   closet: { path: '/closet', title: '옷장' },
   feed: { path: '/feed', title: '피드' },
@@ -46,6 +48,10 @@ const router = createHashRouter([
           {
             path: ROUTE_OBJECTS.recommendation.path,
             element: <RecommendationPage />,
+          },
+          {
+            path: ROUTE_OBJECTS.hotFeed.path,
+            element: <HotFeedPage />,
           },
           {
             path: ROUTE_OBJECTS.closet.path,

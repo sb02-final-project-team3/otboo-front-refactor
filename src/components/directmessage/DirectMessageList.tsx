@@ -56,7 +56,7 @@ export default function DirectMessageList({ directMessages, receiverId, fetchMor
     } else {
       dest = dest.concat(receiverId).concat('_').concat(senderId);
     }
-    return dest;
+    return dest;  
   }, []);
 
   const sendMessage = useCallback(
