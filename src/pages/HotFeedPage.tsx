@@ -52,8 +52,18 @@ export default function HotFeedPage() {
       if (selectedDate) {
         fetchHotFeeds(selectedDate.toDate());
       }
+      if (selectedFeed?.id === feedId) {
+        setSelectedFeed((prev) => {
+          if (!prev) return null;
+          return {
+            ...prev,
+            likedByMe: isLiked,
+            likeCount: isLiked ? prev.likeCount + 1 : prev.likeCount - 1,
+          };
+        });
+      }
     },
-    [likeFeed, unlikeFeed, fetchHotFeeds, selectedDate],
+    [likeFeed, unlikeFeed, fetchHotFeeds, selectedDate, selectedFeed],
   );
 
   const handleAddComment = useCallback(
@@ -74,7 +84,7 @@ export default function HotFeedPage() {
     } else {
       clearComments();
     }
-  }, [selectedFeed, fetchComments, clearComments]);
+  }, [selectedFeed?.id, fetchComments, clearComments]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
