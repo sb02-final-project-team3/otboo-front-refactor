@@ -1,13 +1,18 @@
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Avatar, Box, Card, CardContent, CardHeader, CardMedia, Typography } from '@mui/material';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ko'; // 한국어 로케일 import
+import relativeTime from 'dayjs/plugin/relativeTime'; // relativeTime 플러그인 import
+
 import type { FeedDto } from '../../types/feeds';
 import { WeatherIcons } from '../weathers/WeeklyWeather';
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { ROUTE_OBJECTS } from '../../router';
+
+dayjs.extend(relativeTime); // 플러그인 활성화
+dayjs.locale('ko'); // 한국어 설정
 
 interface Props {
   feed: FeedDto;
@@ -40,6 +45,12 @@ export default function FeedCard({ feed, onClickLike = async () => {} }: Props) 
     [feed.id, feed.likedByMe, onClickLike],
   );
 
+  const subheaderText = useMemo(() => {
+    const viewCountText = `조회수 ${feed.viewCount || 0}회`;
+    const dateText = dayjs(feed.createdAt).fromNow(); // "3일 전" 과 같은 상대 시간
+    return `${viewCountText} • ${dateText}`;
+  }, [feed.viewCount, feed.createdAt]);
+
   return (
     <Card
       sx={{
@@ -70,7 +81,7 @@ export default function FeedCard({ feed, onClickLike = async () => {} }: Props) 
             {feed.author.name}
           </Typography>
         }
-        subheader={dayjs(feed.createdAt).format('M월 D일 HH:mm')}
+        subheader={subheaderText}
       />
       <Box
         sx={{
@@ -88,26 +99,19 @@ export default function FeedCard({ feed, onClickLike = async () => {} }: Props) 
       </Box>
       <CardContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            {/* 좋아요 정보 (왼쪽) */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {feed.likedByMe ? (
                 <FavoriteIcon color="primary" onClick={(e) => handleClickLike(e)} />
               ) : (
                 <FavoriteBorderIcon onClick={(e) => handleClickLike(e)} />
               )}
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+
               <Typography fontWeight="bold" color="default" fontSize={14}>
                 좋아요 {feed.likeCount}개
               </Typography>
             </Box>
-          </Box>
-
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <VisibilityIcon sx={{ fontSize: 16, color: 'grey.600' }} />
-            <Typography fontWeight="semibold" color="text.secondary" fontSize={14}>
-              {feed.viewCount || 0}
-            </Typography>
           </Box>
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

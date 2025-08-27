@@ -1,6 +1,5 @@
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Avatar, Box, Grid, TextField, Typography, IconButton, Menu, MenuItem, Button } from '@mui/material';
 import dayjs from 'dayjs';
@@ -212,10 +211,12 @@ export default function FeedDetail({
                   좋아요 {feed.likeCount}개
                 </Typography>
               </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, ml: 2 }}>
-                <VisibilityIcon sx={{ fontSize: 18, color: 'text.secondary' }} />
-                <Typography fontWeight="semibold" color="text.secondary" fontSize={14}>
-                  조회수 {feed.viewCount || 0}
+              <Typography color="text.secondary" fontSize={14}>
+                •
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <Typography color="text.secondary" fontSize={14}>
+                  조회수 {feed.viewCount || 0} 회
                 </Typography>
               </Box>
             </Box>
