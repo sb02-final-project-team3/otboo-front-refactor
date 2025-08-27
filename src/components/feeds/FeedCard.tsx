@@ -1,5 +1,6 @@
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Avatar, Box, Card, CardContent, CardHeader, CardMedia, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import type { FeedDto } from '../../types/feeds';
@@ -100,6 +101,13 @@ export default function FeedCard({ feed, onClickLike = async () => {} }: Props) 
                 좋아요 {feed.likeCount}개
               </Typography>
             </Box>
+          </Box>
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <VisibilityIcon sx={{ fontSize: 16, color: 'grey.600' }} />
+            <Typography fontWeight="semibold" color="text.secondary" fontSize={14}>
+              {feed.viewCount || 0}
+            </Typography>
           </Box>
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

@@ -20,6 +20,7 @@ export default function FeedPage() {
     params: feedParams,
     deleteFeed,
     updateFeed,
+    increaseViewCount,
   } = useFeedStore();
   const {
     comments,
@@ -68,7 +69,7 @@ export default function FeedPage() {
         clear();
         const { keywordLike, skyStatusEqual, precipitationTypeEqual, sortBy } = feedParams;
         fetchFeeds({ keywordLike, skyStatusEqual, precipitationTypeEqual, sortBy, ...filter });
-      }, 500);
+      }, 400);
 
       return () => clearTimeout(debounceTimer);
     },
@@ -114,6 +115,14 @@ export default function FeedPage() {
     [updateFeed],
   );
 
+  const handleSelectFeed = useCallback(
+    (feed: FeedDto) => {
+      setSelectedFeed(feed);
+      increaseViewCount(feed.id); // 조회수 증가 함수 호출
+    },
+    [increaseViewCount],
+  );
+
   return (
     <Box
       sx={{
@@ -127,7 +136,7 @@ export default function FeedPage() {
       <Paper elevation={1} sx={{ p: 4, width: '100%', height: '100%' }}>
         <FeedList
           feeds={feeds}
-          onClickFeed={setSelectedFeed}
+          onClickFeed={handleSelectFeed}
           onClickLike={handleClickLike}
           onChangeFilter={handleChangeFilter}
           fetchMore={fetchMoreFeeds}

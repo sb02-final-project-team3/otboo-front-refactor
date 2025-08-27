@@ -13,7 +13,7 @@ import useCommentStore from '../stores/commentStore';
 import useAuthStore from '../stores/authStore';
 
 export default function HotFeedPage() {
-  const { hotFeeds, fetchHotFeeds, clear, isLoading } = useHotFeedStore();
+  const { hotFeeds, fetchHotFeeds, clear, isLoading, increaseViewCount } = useHotFeedStore();
   const { likeFeed, unlikeFeed } = useFeedStore();
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
   const [selectedFeed, setSelectedFeed] = useState<FeedDto | null>(null);
@@ -78,6 +78,14 @@ export default function HotFeedPage() {
     [createComment, selectedFeed, authentication],
   );
 
+  const handleSelectFeed = useCallback(
+    (feed: FeedDto) => {
+      setSelectedFeed(feed);
+      increaseViewCount(feed.id);
+    },
+    [increaseViewCount],
+  );
+
   useEffect(() => {
     if (selectedFeed) {
       fetchComments(selectedFeed.id);
@@ -124,7 +132,7 @@ export default function HotFeedPage() {
           ) : (
             <FeedList
               feeds={hotFeeds}
-              onClickFeed={setSelectedFeed}
+              onClickFeed={handleSelectFeed}
               onClickLike={handleClickLike}
               fetchMore={async () => {}} // HotFeedPage는 무한 스크롤이 없으므로 빈 함수 전달
               // onChangeFilter는 전달하지 않음 (필터를 표시하지 않기 위해)

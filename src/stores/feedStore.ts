@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { createFeed, deleteFeed, getFeeds, likeFeed, unlikeFeed, updateFeed } from '../api/feeds';
+
+import { createFeed, deleteFeed, getFeeds, likeFeed, unlikeFeed, updateFeed, increaseFeedView } from '../api/feeds';
 import type { ErrorResponse, PrecipitationType, SkyStatus } from '../types/common';
 import type { FeedCreateRequest, FeedCursorRequest, FeedDto, FeedUpdateRequest } from '../types/feeds';
 
@@ -22,6 +23,7 @@ interface Store {
   deleteFeed: (feedId: string) => Promise<void>;
   likeFeed: (feedId: string) => Promise<void>;
   unlikeFeed: (feedId: string) => Promise<void>;
+  increaseViewCount: (feedId: string) => Promise<void>;
 
   clear: () => void;
 }
@@ -152,6 +154,22 @@ const useFeedStore = create<Store>((set, get) => ({
       set({ error: error as ErrorResponse });
     } finally {
       set({ isLoading: false });
+    }
+  },
+  increaseViewCount: async (feedId: string) => {
+    try {
+      // API 호출은 하되, 상태를 즉시 업데이트하여 사용자 경험을 개선합니다.
+      // API 호출이 실패하더라도 UI에 큰 영향을 주지 않으므로 에러 처리는 콘솔 로그로 충분합니다.
+      increaseFeedView(feedId).catch((error) => {
+        console.error('Failed to increase view count:', error);
+      });
+      set((state) => ({
+        feeds: state.feeds.map((feed) =>
+          feed.id === feedId ? { ...feed, viewCount: (feed.viewCount || 0) + 1 } : feed,
+        ),
+      }));
+    } catch (error) {
+      console.error('useFeedStore.increaseViewCount', error);
     }
   },
   clear: () => {

@@ -40,6 +40,7 @@ export interface FeedDto {
   likeCount: number;
   commentCount: number;
   likedByMe: boolean;
+  viewCount: number;
 }
 
 export interface AuthorDto {

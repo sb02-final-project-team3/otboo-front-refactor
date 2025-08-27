@@ -53,3 +53,8 @@ export const createFeedComment = async (feedId: string, data: CommentCreateReque
   const response = await apiClient.post<CommentDto>(`/api/feeds/${feedId}/comments`, data);
   return response.data;
 };
+
+// 피드 조회수 증가
+export const increaseFeedView = async (feedId: string): Promise<void> => {
+  await apiClient.post(`/api/feeds/${feedId}/view`);
+};
