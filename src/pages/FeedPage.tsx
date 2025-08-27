@@ -68,7 +68,7 @@ export default function FeedPage() {
         clear();
         const { keywordLike, skyStatusEqual, precipitationTypeEqual, sortBy } = feedParams;
         fetchFeeds({ keywordLike, skyStatusEqual, precipitationTypeEqual, sortBy, ...filter });
-      }, 300);
+      }, 500);
 
       return () => clearTimeout(debounceTimer);
     },
